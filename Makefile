@@ -1,6 +1,8 @@
 SHELL:=/bin/bash
 ABSDIR:=$(shell python -c 'import os; print(os.path.realpath("."))')
 REFDIR:=$(shell python -c 'import os; print(os.path.realpath("ref"))')
+HOSTNAME:=$(shell hostname)
+UNAME:=$(shell uname)
 export NXF_VER:=19.01.0
 ./nextflow:
 	curl -fsSL get.nextflow.io | bash
@@ -22,7 +24,7 @@ CONDAURL:=https://repo.continuum.io/miniconda/$(CONDASH)
 
 conda:
 	@echo ">>> Setting up conda..."
-	@wget "$(CONDAURL)" && \
+	wget "$(CONDAURL)" && \
 	bash "$(CONDASH)" -b -p conda && \
 	rm -f "$(CONDASH)"
 
@@ -31,7 +33,10 @@ conda-install: conda
     ensembl-vep=96.0
 
 run: ./nextflow
-	./nextflow run main.nf
+	if grep -q 'bigpurple' <<<'$(HOSTNAME)'; then ./nextflow run main.nf -resume -profile bigpurple ; \
+	else ./nextflow run main.nf -resume ; \
+	fi
+
 
 clean:
 	rm -f trace*.txt.*

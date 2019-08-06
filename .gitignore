@@ -2,3 +2,6 @@
 .nextflow
 nextflow
 work
+conda
+.nextflow.log*
+*.html*
