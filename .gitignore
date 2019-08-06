@@ -1,1 +1,4 @@
 *.simg
+.nextflow
+nextflow
+work

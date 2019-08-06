@@ -1,8 +1,6 @@
 SHELL:=/bin/bash
 ABSDIR:=$(shell python -c 'import os; print(os.path.realpath("../variants"))')
-DOCKERREPO:=stevekm
-VAR:=vep-96.0
-DOCKERTAG:=$(DOCKERREPO):$(VAR)
+DOCKERTAG:=stevekm:vep-96.0
 docker-build:
 	docker build -t "$(DOCKERTAG)" .
 
