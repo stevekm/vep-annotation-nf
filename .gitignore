@@ -5,3 +5,5 @@ work
 conda
 .nextflow.log*
 *.html*
+ref/*
+trace.txt*

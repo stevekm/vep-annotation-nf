@@ -18,12 +18,14 @@ process download_ref {
     storeDir "${params.refDir}"
 
     output:
-    file("homo_sapiens_vep_97_GRCh38")
+    file("hg19")
 
     script:
     """
     curl -O ftp://ftp.ensembl.org/pub/release-97/variation/indexed_vep_cache/homo_sapiens_vep_97_GRCh38.tar.gz
-    tar xzf homo_sapiens_vep_97_GRCh38.tar.gz
+    tar xzf homo_sapiens_vep_97_GRCh38.tar.gz && \
+    mkdir hg19 && \
+    mv homo_sapiens hg19/
     """
 }
 
