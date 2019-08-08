@@ -30,7 +30,8 @@ conda:
 
 conda-install: conda
 	conda install -y -c bioconda \
-    ensembl-vep=96.0
+    ensembl-vep=96.0 \
+	gatk4=4.0.5.1
 
 run: ./nextflow
 	if grep -q 'bigpurple' <<<'$(HOSTNAME)'; then ./nextflow run main.nf -resume -profile bigpurple ; \
@@ -46,5 +47,7 @@ clean:
 	rm -f trace*.txt*
 	rm -f *.html*
 
+bash:
+	bash
 # [ -d work ] && mv work oldwork && rm -rf oldwork &
 # [ -d output ] && mv output oldoutput && rm -rf oldoutput &
