@@ -128,7 +128,7 @@ process vcf_to_tsv {
         .combine(ref_dict2)
 
     output:
-    set val(sampleID), file("${output_file}") into tsv_annotations
+    set val(sampleID), file("${output_file}"), file("csq_key.txt") into tsv_annotations
 
     script:
     prefix = "${sampleID}"
@@ -147,6 +147,8 @@ process vcf_to_tsv {
     -F CSQ \
     --output "${output_file}"
 
+    grep '##INFO=<ID=CSQ' "${vcf}" | sed -e 's|\\(^.*Format: \\)\\(.*\\)">\$|\\2|g' | tr '|' '\\n' > csq_key.txt
+
     ##INFO=<ID=CSQ,Number=.,Type=String,Description="Consequence annotations from Ensembl VEP. Format: Allele|Consequence|IMPACT|SYMBOL|Gene|Feature_type|Feature|BIOTYPE|EXON|INTRON|HGVSc|HGVSp|cDNA_position|CDS_position|Protein_position|Amino_acids|Codons|Existing_variation|DISTANCE|STRAND|FLAGS|SYMBOL_SOURCE|HGNC_ID">
     """
 }
@@ -156,7 +158,7 @@ process split_VEP_fields {
     publishDir "${params.outputDir}/VEP/tsv", mode: 'copy'
 
     input:
-    set val(sampleID), file(tsv) from tsv_annotations
+    set val(sampleID), file(tsv), file(csq_key) from tsv_annotations
 
     output:
     file("${output_file}")
@@ -165,6 +167,6 @@ process split_VEP_fields {
     prefix = "${sampleID}"
     output_file = "${prefix}.vep.reformat.tsv"
     """
-    split-VEP-field.py -i "${tsv}" -o "${output_file}"
+    split-VEP-field.py -i "${tsv}" -o "${output_file}" -k "${csq_key}"
     """
 }
