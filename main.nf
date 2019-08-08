@@ -113,6 +113,9 @@ process vcf_to_tsv {
         .combine(ref_fai2)
         .combine(ref_dict2)
 
+    output:
+    set val(sampleID), file("${output_file}") into tsv_annotations
+
     script:
     prefix = "${sampleID}"
     output_file = "${prefix}.vep.tsv"
@@ -134,5 +137,16 @@ process vcf_to_tsv {
     """
 }
 
-// vep_ref_dir.subscribe{ println "${it}" }
-// input_vcfs.subscribe{ println "${it}" }
+process split_VEP_fields {
+    tag "${sampleID}"
+
+    input:
+    set val(sampleID), file(tsv) from tsv_annotations
+
+    script:
+    prefix = "${sampleID}"
+    output_file = "${prefix}.vep.reformat.tsv"
+    """
+    split-VEP-field.py -i "${tsv}" -o "${output_file}"
+    """
+}
