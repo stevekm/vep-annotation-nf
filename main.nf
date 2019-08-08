@@ -1,3 +1,4 @@
+params.outputDir = "output"
 // params.refDir = "ref" // in nextflow.config instead
 params.ref_fa = "${params.refDir}/iGenomes/Homo_sapiens/UCSC/hg19/Sequence/WholeGenomeFasta/genome.fa"
 params.ref_fai = "${params.refDir}/iGenomes/Homo_sapiens/UCSC/hg19/Sequence/WholeGenomeFasta/genome.fa.fai"
@@ -77,8 +78,10 @@ vep_ref_dir.map{ item ->
 }.set{ vep_ref_dir_assembly }
 
 process vep {
-    tag "${sampleID}"
     // http://useast.ensembl.org/info/docs/tools/vep/script/vep_options.html#basic
+    tag "${sampleID}"
+    publishDir "${params.outputDir}/VEP/raw", mode: 'copy'
+
     input:
     set val(sampleID), file(vcf), file(ref_dir), val(assembly), file(refFasta), file(refFai), file(refDict) from input_vcfs.combine(vep_ref_dir_assembly)
         .combine(ref_fa)
@@ -87,10 +90,12 @@ process vep {
 
     output:
     set val(sampleID), file("${output_file}") into vcf_annotated
+    file("${output_html}")
 
     script:
     prefix = "${sampleID}"
     output_file = "${prefix}.vep.vcf"
+    output_html = "${vcf}".replaceFirst(/.vcf$/, ".vep.vcf_summary.html")
     """
     vep \
     --offline \
@@ -98,6 +103,14 @@ process vep {
     --dir "${ref_dir}" \
     --assembly "${assembly}" \
     --fasta "${refFasta}" \
+    --hgvs \
+    --hgvsg \
+    --protein \
+    --symbol \
+    --ccds \
+    --canonical \
+    --biotype \
+    --pubmed \
     -i "${vcf}" \
     --format vcf \
     -o "${output_file}" \
@@ -107,6 +120,7 @@ process vep {
 
 process vcf_to_tsv {
     tag "${sampleID}"
+    publishDir "${params.outputDir}/VEP/vcf_tsv", mode: 'copy'
 
     input:
     set val(sampleID), file(vcf), file(refFasta), file(refFai), file(refDict) from vcf_annotated.combine(ref_fa2)
@@ -139,9 +153,13 @@ process vcf_to_tsv {
 
 process split_VEP_fields {
     tag "${sampleID}"
+    publishDir "${params.outputDir}/VEP/tsv", mode: 'copy'
 
     input:
     set val(sampleID), file(tsv) from tsv_annotations
+
+    output:
+    file("${output_file}")
 
     script:
     prefix = "${sampleID}"

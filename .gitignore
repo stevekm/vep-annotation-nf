@@ -7,3 +7,4 @@ conda
 *.html*
 ref/*
 trace.txt*
+output
