@@ -161,12 +161,14 @@ process split_VEP_fields {
     set val(sampleID), file(tsv), file(csq_key) from tsv_annotations
 
     output:
-    file("${output_file}")
+    file("${output_file}") into vep_tsvs
 
     script:
     prefix = "${sampleID}"
     output_file = "${prefix}.vep.reformat.tsv"
     """
-    split-VEP-field.py -i "${tsv}" -o "${output_file}" -k "${csq_key}"
+    split-VEP-field.py -i "${tsv}" -o tmp -k "${csq_key}"
+    paste-col.py -i tmp -o ${output_file} --header "SampleID" --value "${sampleID}"
     """
 }
+vep_tsvs.collectFile(name: "annotations.tsv", keepHeader: true, storeDir: "${params.outputDir}")
