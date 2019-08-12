@@ -16,4 +16,5 @@ ENV PATH="/conda/bin:${PATH}"
 
 # ~~~~~ VEP ~~~~~ #
 RUN conda install -y -c bioconda \
-ensembl-vep=96.0
+ensembl-vep=96.0 \
+gatk4=4.0.5.1

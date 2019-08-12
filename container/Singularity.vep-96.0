@@ -17,7 +17,8 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
 
     # ~~~~~ VEP ~~~~~ #
     conda install -y -c bioconda \
-    ensembl-vep=96.0
+    ensembl-vep=96.0 \
+    gatk4=4.0.5.1
 
 %test
     which vep
