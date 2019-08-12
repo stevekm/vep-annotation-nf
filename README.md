@@ -1,6 +1,6 @@
 # vep-annotation-nf
 
-variant annotation workflow with VEP
+Demo pipeline for annotating variants in .vcf files using [Variant Effect Predictor](https://useast.ensembl.org/info/docs/tools/vep/index.html) (VEP).
 
 # Installation
 
