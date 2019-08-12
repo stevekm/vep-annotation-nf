@@ -38,7 +38,7 @@ make conda-install
 
 ## Reference Files
 
-VEP reference files will be downloaded automatically by the pipeline. However the hg19 genome fasta, fasta.fai, and fasta.dict files must also be obtained (not included). On NYULMC Big Purple, all required files are already cached and no download should be needed. On other systems, the command line arguments specifying the genome fasta files should be provided separately when running, or place the files `genome.fa`, `genome.fa.fai`, and `genome.dict` inside the included `ref` directory.
+VEP reference files will be downloaded automatically by the pipeline. However the hg19 genome fasta, fasta.fai, and fasta.dict files must also be obtained (not included; try [these](https://support.illumina.com/sequencing/sequencing_software/igenome.html)). On NYULMC Big Purple, all required files are already cached and no download should be needed. On other systems, the command line arguments specifying the genome fasta files should be provided separately when running, or place the files `genome.fa`, `genome.fa.fai`, and `genome.dict` inside the included `ref` directory.
 
 # Run
 
