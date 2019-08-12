@@ -33,9 +33,10 @@ conda-install: conda
     ensembl-vep=96.0 \
 	gatk4=4.0.5.1
 
+EP:=
 run: ./nextflow
 	if grep -q 'bigpurple' <<<'$(HOSTNAME)'; then ./nextflow run main.nf -resume -profile bigpurple ; \
-	else ./nextflow run main.nf -resume ; \
+	else ./nextflow run main.nf -resume $(EP) ; \
 	fi
 
 
@@ -47,7 +48,7 @@ clean:
 	rm -f trace*.txt*
 	rm -f *.html*
 
+# for debugging
 bash:
 	bash
-# [ -d work ] && mv work oldwork && rm -rf oldwork &
-# [ -d output ] && mv output oldoutput && rm -rf oldoutput &
+\

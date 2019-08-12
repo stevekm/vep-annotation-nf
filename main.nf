@@ -1,8 +1,4 @@
 params.outputDir = "output"
-// params.refDir = "ref" // in nextflow.config instead
-params.ref_fa = "${params.refDir}/iGenomes/Homo_sapiens/UCSC/hg19/Sequence/WholeGenomeFasta/genome.fa"
-params.ref_fai = "${params.refDir}/iGenomes/Homo_sapiens/UCSC/hg19/Sequence/WholeGenomeFasta/genome.fa.fai"
-params.ref_dict = "${params.refDir}/iGenomes/Homo_sapiens/UCSC/hg19/Sequence/WholeGenomeFasta/genome.dict"
 
 // ~~~~~ START WORKFLOW ~~~~~ //
 log.info "~~~~~~~ VEP Pipeline ~~~~~~~"
