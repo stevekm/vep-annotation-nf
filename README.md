@@ -73,3 +73,5 @@ Tested on RHEL 7, macOS 10.12
 - `bash`
 
 - GNU `make`
+
+- Python 2.7+
